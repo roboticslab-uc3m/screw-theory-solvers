@@ -33,7 +33,7 @@ if(ENABLE_ScrewTheoryLib)
     target_compile_features(ScrewTheoryLib PUBLIC cxx_std_17) # nested namespace definition
 
     install(TARGETS ScrewTheoryLib
-            EXPORT SCREW_THEORY_SOLVERS)
+            EXPORT RL_STS_LIBS)
 
     set_property(GLOBAL APPEND PROPERTY _exported_dependencies orocos_kdl)
 

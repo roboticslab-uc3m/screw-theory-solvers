@@ -1,0 +1,13 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/roboticslab-screw-theory-solvers-targets.cmake")
+
+set(_public_deps "@_exported_dependencies@")
+
+if(_public_deps)
+    foreach(_dep IN LISTS _public_deps)
+        find_dependency(${_dep})
+    endforeach()
+endif()
+
+unset(_public_deps)

@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.19...3.30)
 
-project(SCREW_THEORY_SOLVERS LANGUAGES CXX)
+project(ROBOTICSLAB_SCREW_THEORY_SOLVERS
+        VERSION 0.1.0
+        DESCRIPTION "A collection of solvers based on Screw Theory"
+        HOMEPAGE_URL "https://robots.uc3m.es/screw-theory-solvers/"
+        LANGUAGES CXX)
 
 # Let the user specify a configuration (only single-config generators).
 if(NOT CMAKE_CONFIGURATION_TYPES)
@@ -23,13 +27,12 @@ if(NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # Pick up our cmake modules.
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/find-modules)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Hard dependencies.
 find_package(orocos_kdl 1.4 REQUIRED)
 
 # Soft dependencies.
-find_package(YCM 0.11 QUIET)
 find_package(GTestSources 1.8 QUIET)
 find_package(pybind11 QUIET)
 find_package(Doxygen QUIET)
@@ -64,18 +67,48 @@ endif()
 # Store the package in the user registry.
 set(CMAKE_EXPORT_PACKAGE_REGISTRY ON)
 
-# Create and install config files.
-include(InstallBasicPackageFiles)
+include(CMakePackageConfigHelpers)
+set(_package_name "roboticslab-screw-theory-solvers")
 
-install_basic_package_files(SCREW_THEORY_SOLVERS
-                            VERSION 0.1.0
-                            COMPATIBILITY AnyNewerVersion
-                            NO_SET_AND_CHECK_MACRO
-                            NO_CHECK_REQUIRED_COMPONENTS_MACRO
-                            NAMESPACE ROBOTICSLAB::
-                            DEPENDENCIES ${_exported_dependencies})
+# Generate local-dir <package>-config.cmake.
+configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in"
+                                "${CMAKE_CURRENT_BINARY_DIR}/${_package_name}-config.cmake"
+                                INSTALL_DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
+                                NO_SET_AND_CHECK_MACRO
+                                NO_CHECK_REQUIRED_COMPONENTS_MACRO
+                                INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}")
 
-# Configure and create uninstall target (if YCM was found).
-if(YCM_FOUND)
-    include(AddUninstallTarget)
-endif()
+# Generate install-dir <package>-config.cmake.
+configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake.in"
+                                "${CMAKE_CURRENT_BINARY_DIR}/${_package_name}-config-install.cmake"
+                                INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+                                NO_SET_AND_CHECK_MACRO
+                                NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+
+# Generate <package>-config-version.cmake.
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${_package_name}-config-version.cmake"
+                                    VERSION "${PROJECT_VERSION}"
+                                    COMPATIBILITY SameMajorVersion)
+
+# Generate <package>-targets.cmake.
+export(EXPORT RL_STS_LIBS
+        NAMESPACE ROBOTICSLAB::
+        FILE ${_package_name}-targets.cmake)
+
+# Install <package>-config.cmake.
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${_package_name}-config-install.cmake"
+        RENAME ${_package_name}-config.cmake
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+
+# Install <package>-config-version.cmake.
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${_package_name}-config-version.cmake"
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+
+# Install <package>-targets.cmake.
+install(EXPORT RL_STS_LIBS
+        NAMESPACE ROBOTICSLAB::
+        FILE ${_package_name}-targets.cmake
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+
+# Add uninstall target.
+include(AddUninstallTarget)

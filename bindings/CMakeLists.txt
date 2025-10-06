@@ -6,15 +6,9 @@ cmake_dependent_option(CREATE_BINDINGS_PYTHON "Enable/disable Python bindings" O
                        pybind11_FOUND OFF)
 
 if(CREATE_BINDINGS_PYTHON)
-    # The default for Python3_FIND_UNVERSIONED_NAMES is LAST, which
-    # means find_package(Python3) will prefer to find /usr/bin/python3.11
-    # over /usr/bin/python3.  We actually prefer to find the system version,
-    # so set this to FIRST.
-    set(Python3_FIND_UNVERSIONED_NAMES FIRST)
-
     set(PYBIND11_PYTHON_VERSION 3 CACHE STRING "Python version used by PyBind11")
 
-    find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+    find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
     # Installation path is determined reliably on most platforms using sysconfig.
     if(Python3_VERSION VERSION_GREATER_EQUAL 3.12)

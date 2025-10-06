@@ -54,7 +54,7 @@ jobs:
         path: .deps/kdl
 
     - name: Install dependencies via apt
-      run: sudo apt-get install -qq ccache libeigen3-dev pybind11-dev googletest
+      run: sudo apt-get install -qq ccache libeigen3-dev python3 pybind11-dev googletest
 
     - name: Set up Ccache
       uses: hendrikmuhs/ccache-action@v1
