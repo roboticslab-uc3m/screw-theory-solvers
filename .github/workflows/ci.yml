@@ -53,14 +53,6 @@ jobs:
         repository: orocos/orocos_kinematics_dynamics
         path: .deps/kdl
 
-    - name: Check out SWIG
-      if: ${{matrix.system.os == 'ubuntu-24.04'}}
-      uses: actions/checkout@v4
-      with:
-        repository: swig/swig
-        ref: v4.2.1
-        path: .deps/swig
-
     - name: Install dependencies via apt
       run: sudo apt-get install -qq ccache libeigen3-dev googletest
 
@@ -80,16 +72,8 @@ jobs:
         cmake --build .deps/kdl/orocos_kdl/build
         sudo cmake --install .deps/kdl/orocos_kdl/build
 
-    - name: Build SWIG
-      if: ${{matrix.system.os == 'ubuntu-24.04'}}
-      run: |
-        cmake -S .deps/swig -B .deps/swig/build
-        cmake --build .deps/swig/build
-        sudo cmake --install .deps/swig/build
-        sudo ln -s /usr/local/bin/swig /usr/local/bin/swig4.0 # shadows /usr/bin/swig4.0
-
     - name: Configure main project
-      run: cmake -S . -B ./build -DCREATE_BINDINGS_PYTHON=ON -DENABLE_examples=ON
+      run: cmake -S . -B ./build -DCREATE_BINDINGS_PYTHON=ON
 
     - name: Compile main project
       run: cmake --build ./build

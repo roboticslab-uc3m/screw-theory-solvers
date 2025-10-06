@@ -1,9 +1,4 @@
-if(NOT orocos_kdl_FOUND AND (NOT DEFINED ENABLE_ScrewTheoryLib OR ENABLE_ScrewTheoryLib))
-    message(WARNING "orocos_kdl package not found, disabling ScrewTheoryLib")
-endif()
-
-cmake_dependent_option(ENABLE_ScrewTheoryLib "Enable/disable ScrewTheoryLib library" ON
-                       orocos_kdl_FOUND OFF)
+option(ENABLE_ScrewTheoryLib "Enable/disable ScrewTheoryLib library" ON)
 
 if(ENABLE_ScrewTheoryLib)
 
@@ -43,9 +38,5 @@ if(ENABLE_ScrewTheoryLib)
     set_property(GLOBAL APPEND PROPERTY _exported_dependencies orocos_kdl)
 
     add_library(ROBOTICSLAB::ScrewTheoryLib ALIAS ScrewTheoryLib)
-
-else()
-
-    set(ENABLE_ScrewTheoryLib OFF CACHE BOOL "Enable/disable ScrewTheoryLib library" FORCE)
 
 endif()
