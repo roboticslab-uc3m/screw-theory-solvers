@@ -1,0 +1,15 @@
+*~
+*.swp
+*.orig
+*.pyc
+.Rhistory
+tags
+CMakeLists.txt.user
+**/build*/
+/.settings/
+/.cproject
+/.project
+/.vs/
+/.vscode/
+/external/
+/doc/html/*

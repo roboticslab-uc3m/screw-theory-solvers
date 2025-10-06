@@ -1,0 +1,38 @@
+
+/**
+@brief The main, catch-all namespace for Robotics Lab UC3M.
+ */
+namespace roboticslab
+{
+    /**
+     * @brief Contains classes related to unit testing.
+     */
+    namespace test {}
+}
+
+/**
+ * \defgroup kinematics-dynamics-applications kinematics-dynamics Applications (Collections of Programs)
+ *
+ * @brief kinematics-dynamics applications (collections of programs).
+ */
+
+/**
+ * \defgroup kinematics-dynamics-libraries kinematics-dynamics Libraries
+ *
+ * @brief kinematics-dynamics libraries.
+ */
+
+/**
+ * \defgroup kinematics-dynamics-programs kinematics-dynamics Programs
+ * @brief kinematics-dynamics programs.
+ */
+
+/**
+ * \defgroup kinematics-dynamics-examples kinematics-dynamics Examples
+ * @brief kinematics-dynamics examples.
+ */
+
+/**
+ * \defgroup kinematics-dynamics-tests kinematics-dynamics Tests
+ * @brief kinematics-dynamics tests.
+ */
