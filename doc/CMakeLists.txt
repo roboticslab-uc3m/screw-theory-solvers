@@ -9,7 +9,7 @@ elseif(NOT DOXYGEN_FOUND)
     return()
 endif()
 
-set(DOXYGEN_PROJECT_NAME "kinematics-dynamics")
+set(DOXYGEN_PROJECT_NAME "screw-theory-solvers")
 set(DOXYGEN_REPEAT_BRIEF NO)
 set(DOXYGEN_EXTRACT_PRIVATE YES)
 set(DOXYGEN_EXTRACT_STATIC YES)
@@ -19,7 +19,7 @@ set(DOXYGEN_IMAGE_PATH ./doc/fig)
 set(DOXYGEN_HTML_TIMESTAMP YES)
 set(DOXYGEN_USE_MATHJAX YES)
 set(DOXYGEN_USE_MDFILE_AS_MAINPAGE ./README.md)
-set(DOXYGEN_CITE_BIB_FILES ./doc/kinematics-dynamics.bib)
+set(DOXYGEN_CITE_BIB_FILES ./doc/screw-theory-solvers.bib)
 
 set(_doxygen_input README.md
                    doc

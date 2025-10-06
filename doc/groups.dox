@@ -1,6 +1,5 @@
-
 /**
-@brief The main, catch-all namespace for Robotics Lab UC3M.
+@brief The main, catch-all namespace for RoboticsLab UC3M.
  */
 namespace roboticslab
 {
@@ -11,28 +10,28 @@ namespace roboticslab
 }
 
 /**
- * \defgroup kinematics-dynamics-applications kinematics-dynamics Applications (Collections of Programs)
+ * \defgroup screw-theory-solvers-applications screw-theory-solvers Applications (Collections of Programs)
  *
- * @brief kinematics-dynamics applications (collections of programs).
+ * @brief screw-theory-solvers applications (collections of programs).
  */
 
 /**
- * \defgroup kinematics-dynamics-libraries kinematics-dynamics Libraries
+ * \defgroup screw-theory-solvers-libraries screw-theory-solvers Libraries
  *
- * @brief kinematics-dynamics libraries.
+ * @brief screw-theory-solvers libraries.
  */
 
 /**
- * \defgroup kinematics-dynamics-programs kinematics-dynamics Programs
- * @brief kinematics-dynamics programs.
+ * \defgroup screw-theory-solvers-programs screw-theory-solvers Programs
+ * @brief screw-theory-solvers programs.
  */
 
 /**
- * \defgroup kinematics-dynamics-examples kinematics-dynamics Examples
- * @brief kinematics-dynamics examples.
+ * \defgroup screw-theory-solvers-examples screw-theory-solvers Examples
+ * @brief screw-theory-solvers examples.
  */
 
 /**
- * \defgroup kinematics-dynamics-tests kinematics-dynamics Tests
- * @brief kinematics-dynamics tests.
+ * \defgroup screw-theory-solvers-tests screw-theory-solvers Tests
+ * @brief screw-theory-solvers tests.
  */

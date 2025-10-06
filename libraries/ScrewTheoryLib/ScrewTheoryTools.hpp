@@ -12,7 +12,7 @@ namespace roboticslab
 {
 
 /**
- * @ingroup kinematics-dynamics-libraries
+ * @ingroup screw-theory-solvers-libraries
  * \defgroup ScrewTheoryLib
  *
  * @brief Contains classes related to Screw Theory solvers and tools.

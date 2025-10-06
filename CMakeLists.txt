@@ -26,10 +26,10 @@ endif()
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/find-modules)
 
 # Hard dependencies.
-find_package(YCM 0.11 REQUIRED)
+find_package(orocos_kdl 1.4 REQUIRED)
 
 # Soft dependencies.
-find_package(orocos_kdl 1.4 QUIET)
+find_package(YCM 0.11 QUIET)
 find_package(GTestSources 1.8 QUIET)
 find_package(SWIG 3.0.12 QUIET)
 find_package(Doxygen QUIET)
@@ -50,7 +50,6 @@ enable_testing()
 
 # Add main contents.
 add_subdirectory(libraries)
-add_subdirectory(programs)
 add_subdirectory(tests)
 add_subdirectory(bindings)
 add_subdirectory(doc)
@@ -76,5 +75,7 @@ install_basic_package_files(SCREW_THEORY_SOLVERS
                             NAMESPACE ROBOTICSLAB::
                             DEPENDENCIES ${_exported_dependencies})
 
-# Configure and create uninstall target.
-include(AddUninstallTarget)
+# Configure and create uninstall target (if YCM was found).
+if(YCM_FOUND)
+    include(AddUninstallTarget)
+endif()

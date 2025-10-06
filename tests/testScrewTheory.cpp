@@ -19,7 +19,7 @@ namespace roboticslab::test
 {
 
 /**
- * @ingroup kinematics-dynamics-tests
+ * @ingroup screw-theory-solvers-tests
  * @brief Tests classes related to @ref ScrewTheoryLib.
  */
 class ScrewTheoryTest : public testing::Test
@@ -296,12 +296,12 @@ public:
     {
         KDL::Chain chain = makeUR16eFromDh();
         KDL::ChainFkSolverPos_recursive fkSolver(chain);
-        KDL::JntArray q(chain.getNrOfJoints()); 
+        KDL::JntArray q(chain.getNrOfJoints());
 
         KDL::Frame H_DH_0;
         fkSolver.JntToCart(q, H_DH_0);
 
-        KDL::Frame H_S_T = H_DH_0;  
+        KDL::Frame H_S_T = H_DH_0;
         PoeExpression poe(H_S_T);
 
         poe.append(MatrixExponential(   MatrixExponential::ROTATION, {0,  0, 1}, {    0,     0, 0.181}));
@@ -1227,8 +1227,8 @@ TEST_F(ScrewTheoryTest, PardosGotorFour)
 
     checkSolutions(actual, expected);
 
-    KDL::Vector p7(0, 1, 0); 
-    KDL::Vector k7(2, 1, 2); 
+    KDL::Vector p7(0, 1, 0);
+    KDL::Vector k7(2, 1, 2);
     PardosGotorFour pg4e(exp1, exp2, p7);
     KDL::Frame rhs9(k7 - p7);
 
@@ -1252,7 +1252,7 @@ TEST_F(ScrewTheoryTest, PardosGotorFive)
     MatrixExponential exp2(MatrixExponential::ROTATION, {1, 0, 0}, {0, 0, 0});
     PardosGotorFive pg5(exp, exp2, p);
 
-    ASSERT_EQ(pg5.solutions(), 2);  
+    ASSERT_EQ(pg5.solutions(), 2);
 
     KDL::Frame rhs(k - p);
     ScrewTheoryIkSubproblem::Solutions actual;
@@ -1562,7 +1562,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //caso anterior con posición no alcanzable    
+    //caso anterior con posición no alcanzable
     KDL::Vector p6(0, 1, 0);
     KDL::Vector k6(2, 0, 2);
 
@@ -1603,7 +1603,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //caso anterior con posición no alcanzable  
+    //caso anterior con posición no alcanzable
     KDL::Vector p8(-3, 0, 0);
     KDL::Vector k8(0, 0, 0);
 
@@ -1622,7 +1622,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //p pertenece al eje 3  
+    //p pertenece al eje 3
     KDL::Vector p9(-2, 0, 0);
     KDL::Vector k9(2, 2, 2);
 
@@ -1660,7 +1660,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //k pertenece al eje 1 
+    //k pertenece al eje 1
     KDL::Vector p11(0, 1, 0);
     KDL::Vector k11(3, 1, 1);
 
