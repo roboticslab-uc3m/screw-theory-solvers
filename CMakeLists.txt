@@ -31,7 +31,7 @@ find_package(orocos_kdl 1.4 REQUIRED)
 # Soft dependencies.
 find_package(YCM 0.11 QUIET)
 find_package(GTestSources 1.8 QUIET)
-find_package(SWIG 3.0.12 QUIET)
+find_package(pybind11 QUIET)
 find_package(Doxygen QUIET)
 
 # Standard installation directories.
