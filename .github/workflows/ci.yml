@@ -47,14 +47,8 @@ jobs:
     - name: Check out main project
       uses: actions/checkout@v4
 
-    - name: Check out Orocos KDL
-      uses: actions/checkout@v4
-      with:
-        repository: orocos/orocos_kinematics_dynamics
-        path: .deps/kdl
-
     - name: Install dependencies via apt
-      run: sudo apt-get install -qq ccache libeigen3-dev python3 pybind11-dev googletest
+      run: sudo apt-get install -qq ccache liborocos-kdl-dev pybind11-dev googletest
 
     - name: Set up Ccache
       uses: hendrikmuhs/ccache-action@v1
@@ -65,12 +59,6 @@ jobs:
       run: |
         echo "CC=${{matrix.system.compiler.cc}}" >> $GITHUB_ENV
         echo "CXX=${{matrix.system.compiler.cxx}}" >> $GITHUB_ENV
-
-    - name: Build Orocos KDL
-      run: |
-        cmake -S .deps/kdl/orocos_kdl -B .deps/kdl/orocos_kdl/build
-        cmake --build .deps/kdl/orocos_kdl/build
-        sudo cmake --install .deps/kdl/orocos_kdl/build
 
     - name: Configure main project
       run: cmake -S . -B ./build -DCREATE_BINDINGS_PYTHON=ON
