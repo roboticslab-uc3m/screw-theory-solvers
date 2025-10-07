@@ -92,7 +92,7 @@ write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${_package_name}-c
                                     COMPATIBILITY SameMajorVersion)
 
 # Generate <package>-targets.cmake.
-export(EXPORT RL_STS_LIBS
+export(EXPORT RL_STS
         NAMESPACE ROBOTICSLAB::
         FILE ${_package_name}-targets.cmake)
 
@@ -106,7 +106,7 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${_package_name}-config-version.cmake
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
 
 # Install <package>-targets.cmake.
-install(EXPORT RL_STS_LIBS
+install(EXPORT RL_STS
         NAMESPACE ROBOTICSLAB::
         FILE ${_package_name}-targets.cmake
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")

@@ -13,7 +13,7 @@ namespace roboticslab
 {
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Abstract base class for a robot configuration strategy selector
  */
@@ -131,7 +131,7 @@ protected:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief IK solver configuration strategy selector based on the overall
  * displacement of all joints.
@@ -163,7 +163,7 @@ protected:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief IK solver configuration strategy selector based on human walking.
  *
@@ -191,7 +191,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Base factory class for ConfigurationSelector.
  *
@@ -224,7 +224,7 @@ protected:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Implementation factory class for ConfigurationSelectorLeastOverallAngularDisplacement.
  *
@@ -250,7 +250,7 @@ public:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Implementation factory class for ConfigurationSelectorHumanoidGait.
  *

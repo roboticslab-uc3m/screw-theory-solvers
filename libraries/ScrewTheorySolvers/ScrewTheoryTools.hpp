@@ -13,7 +13,7 @@ namespace roboticslab
 
 /**
  * @ingroup screw-theory-solvers-libraries
- * \defgroup ScrewTheoryLib
+ * @defgroup ScrewTheorySolvers
  *
  * @brief Contains classes related to Screw Theory solvers and tools.
  *
@@ -32,7 +32,7 @@ namespace roboticslab
  */
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Multiply a vector by itself to obtain a square matrix
  *
@@ -45,7 +45,7 @@ namespace roboticslab
 KDL::Rotation vectorPow2(const KDL::Vector & v);
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Clip an angle value between certain bounds.
  *

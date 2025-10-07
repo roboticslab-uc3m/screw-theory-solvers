@@ -1,1 +1,1 @@
-add_subdirectory(ScrewTheoryLib)
+add_subdirectory(ScrewTheorySolvers)

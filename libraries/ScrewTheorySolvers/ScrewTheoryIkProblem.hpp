@@ -15,7 +15,7 @@ namespace roboticslab
 {
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Interface shared by all IK subproblems found in Screw Theory applied
  * to Robotics.
@@ -97,7 +97,7 @@ public:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Proxy IK problem solver class that iterates over a sequence of subproblems
  *
@@ -197,7 +197,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Automated IK solution finder
  *

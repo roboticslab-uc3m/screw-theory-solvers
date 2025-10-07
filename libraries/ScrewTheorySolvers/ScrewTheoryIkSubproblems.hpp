@@ -12,7 +12,7 @@ namespace roboticslab
 {
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief First Paden-Kahan subproblem
  *
@@ -48,7 +48,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Second Paden-Kahan subproblem
  *
@@ -87,7 +87,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Third Paden-Kahan subproblem
  *
@@ -124,7 +124,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief First Pardos-Gotor subproblem
  *
@@ -160,7 +160,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Second Pardos-Gotor subproblem
  *
@@ -198,7 +198,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Third Pardos-Gotor subproblem
  *
@@ -235,7 +235,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Fourth Pardos-Gotor subproblem
  *
@@ -273,10 +273,10 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Fifth Pardos-Gotor subproblem
- * 
+ *
  * Dual solution, single revolute joint geometric IK subproblem given by
  * @f$ e\,^{\hat{\xi}\,{\theta}} \cdot \omega_p = \omega_k \ ; e\,^{\hat{\xi}\,{\theta}} \cdot \Pi_p = \Pi_k @f$
  * (rotation around one single axis applied to a perpendicular line or plane,
@@ -312,7 +312,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Sixth Pardos-Gotor subproblem
  *
@@ -350,10 +350,10 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Seventh Pardos-Gotor subproblem
- * 
+ *
  * Triple solution, triple revolute joint geometric IK subproblem given by
  * @f$ e\,^{\hat{\xi_1}\,{\theta_1}} \cdot e\,^{\hat{\xi_2}\,{\theta_2}} \cdot e\,^{\hat{\xi_3}\,{\theta_3}} \cdot p = k @f$
  * (rotation around three subsequent axes (one skew + two parallel) applied to a point,
@@ -390,7 +390,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLibd
+ * @ingroup ScrewTheorySolversd
  *
  * @brief Eighth Pardos-Gotor subproblem
  *
@@ -409,7 +409,7 @@ public:
      *
      * @param exp1 First POE term.
      * @param exp2 Second POE term.
-     * @param exp3 Third POE term.  
+     * @param exp3 Third POE term.
      * @param p Characteristic point.
      * @param firstID ID of first axis
      * @param lastID ID of third axis
@@ -439,7 +439,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Third Pardos-Gotor and First Paden Kahan subproblems
  *
@@ -478,7 +478,7 @@ private:
 };
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Algebraic approach
  *
@@ -509,8 +509,8 @@ public:
     }
 
     bool solve(const KDL::Frame & rhs, const KDL::Frame & pointTransform, const JointConfig & reference, Solutions & solutions) const override
-    { 
-        return false; 
+    {
+        return false;
     }
 
     int solutions() const override

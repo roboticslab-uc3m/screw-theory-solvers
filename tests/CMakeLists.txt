@@ -11,15 +11,15 @@ if(ENABLE_tests)
 
     include_directories(${GTestSources_INCLUDE_DIR})
 
-    # testScrewTheory
+    # testScrewTheorySolvers
 
-    if(ENABLE_ScrewTheoryLib)
-        add_executable(testScrewTheory testScrewTheory.cpp)
+    if(ENABLE_ScrewTheorySolvers)
+        add_executable(testScrewTheorySolvers testScrewTheorySolvers.cpp)
 
-        target_link_libraries(testScrewTheory ROBOTICSLAB::ScrewTheoryLib
-                                              gtest_main)
+        target_link_libraries(testScrewTheorySolvers ROBOTICSLAB::ScrewTheorySolvers
+                                                     gtest_main)
 
-        gtest_discover_tests(testScrewTheory)
+        gtest_discover_tests(testScrewTheorySolvers)
     endif()
 
 else()

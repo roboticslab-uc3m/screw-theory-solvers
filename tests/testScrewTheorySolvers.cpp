@@ -20,7 +20,7 @@ namespace roboticslab::test
 
 /**
  * @ingroup screw-theory-solvers-tests
- * @brief Tests classes related to @ref ScrewTheoryLib.
+ * @brief Tests classes related to @ref ScrewTheorySolvers.
  */
 class ScrewTheoryTest : public testing::Test
 {

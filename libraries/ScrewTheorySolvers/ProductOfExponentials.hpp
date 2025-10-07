@@ -15,7 +15,7 @@ namespace roboticslab
 {
 
 /**
- * @ingroup ScrewTheoryLib
+ * @ingroup ScrewTheorySolvers
  *
  * @brief Abstraction of a product of exponentials (POE) formula.
  *

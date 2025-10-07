@@ -15,7 +15,7 @@ if(CREATE_BINDINGS_PYTHON)
                               PySTS/PySTS.cpp
                               PySTS/solvers.cpp)
 
-    target_link_libraries(PySTS PRIVATE ROBOTICSLAB::ScrewTheoryLib)
+    target_link_libraries(PySTS PRIVATE ROBOTICSLAB::ScrewTheorySolvers)
 
     install(TARGETS PySTS
             DESTINATION "${PYTHON_PACKAGES_INSTALL_DIR}")
