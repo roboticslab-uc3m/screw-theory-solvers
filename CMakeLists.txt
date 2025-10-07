@@ -33,8 +33,9 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(orocos_kdl 1.4 REQUIRED)
 
 # Soft dependencies.
-find_package(GTestSources 1.8 QUIET)
+find_package(Python3 COMPONENTS Interpreter Development QUIET)
 find_package(pybind11 QUIET)
+find_package(GTestSources 1.8 QUIET)
 find_package(Doxygen QUIET)
 
 # Standard installation directories.
