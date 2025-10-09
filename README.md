@@ -1,8 +1,8 @@
 Screw theory-based solvers for robotic applications.
 
-Link to Doxygen generated documentation: https://robots.uc3m.es/screw-theory-solvers/
+Link to Doxygen generated documentation: <https://robots.uc3m.es/screw-theory-solvers/>
 
-Original work: Javier Armijo Martín, *Programación de un solver basado en Screw Theory para brazos manipuladores robóticos*, Trabajo Fin de Grado, Universidad Carlos III de Madrid, 2024. https://github.com/javiarmijo/screw-theory-solvers
+Original work: Javier Armijo Martín, *Programación de un solver basado en Screw Theory para brazos manipuladores robóticos*, Trabajo Fin de Grado, Universidad Carlos III de Madrid, 2025. <https://github.com/javiarmijo/screw-theory-solvers>
 
 ## Installation
 
