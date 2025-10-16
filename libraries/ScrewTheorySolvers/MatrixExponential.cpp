@@ -34,7 +34,7 @@ MatrixExponential::MatrixExponential(motion _motionType, const KDL::Vector & _ax
 
 KDL::Frame MatrixExponential::asFrame(double theta) const
 {
-    KDL::Frame H;
+    auto H = KDL::Frame::Identity();
 
     switch (motionType)
     {
@@ -46,7 +46,7 @@ KDL::Frame MatrixExponential::asFrame(double theta) const
         H.p = axis * theta;
         break;
     default:
-        std::cout << "Unrecognized motion type:" << motionType << std::endl;
+        std::cout << "Unrecognized motion type: " << motionType << std::endl;
     }
 
     return H;

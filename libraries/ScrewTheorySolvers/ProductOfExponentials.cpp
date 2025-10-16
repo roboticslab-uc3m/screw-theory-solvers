@@ -3,11 +3,10 @@
 #include "ProductOfExponentials.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 #include <kdl/joint.hpp>
 #include <kdl/segment.hpp>
-
-#include <iostream>
 
 using namespace roboticslab;
 

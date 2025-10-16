@@ -3,7 +3,6 @@
 #include "ScrewTheoryIkSubproblems.hpp"
 
 #include <cmath>
-#include <iostream>
 
 #include "ScrewTheoryTools.hpp"
 
@@ -42,7 +41,7 @@ bool PadenKahanOne::solve(const KDL::Frame & rhs, const KDL::Frame & pointTransf
 
     solutions = {{normalizeAngle(theta)}};
 
-    return KDL::Equal(u_w, v_w, 1e-2) && KDL::Equal(u_p.Norm(), v_p.Norm(), 1e-2);
+    return KDL::Equal(u_w, v_w) && KDL::Equal(u_p.Norm(), v_p.Norm());
 }
 
 // -----------------------------------------------------------------------------

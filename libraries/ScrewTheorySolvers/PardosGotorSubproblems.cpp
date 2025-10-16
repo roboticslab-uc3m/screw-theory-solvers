@@ -4,8 +4,6 @@
 
 #include "ScrewTheoryTools.hpp"
 
-#include <iostream>
-
 using namespace roboticslab;
 
 // -----------------------------------------------------------------------------
@@ -95,12 +93,14 @@ bool PardosGotorThree::solve(const KDL::Frame & rhs, const KDL::Frame & pointTra
 {
     KDL::Vector f = pointTransform * p;
     KDL::Vector rhsAsVector = rhs * p - k;
-
     double delta = rhsAsVector.Norm();
+
     KDL::Vector diff = k - f;
+
     double dotPr = KDL::dot(exp.getAxis(), diff);
     double sq2 = std::pow(dotPr, 2) - std::pow(diff.Norm(), 2) + std::pow(delta, 2);
     bool sq2_zero = KDL::Equal(sq2, 0.0);
+
     bool ret;
 
     if (!sq2_zero && sq2 > 0)
@@ -127,7 +127,7 @@ PardosGotorFour::PardosGotorFour(const MatrixExponential & _exp1, const MatrixEx
       exp2(_exp2),
       p(_p),
       n(computeNormal(exp1, exp2)),
-      axisPow(vectorPow2(exp1.getAxis())) 
+      axisPow(vectorPow2(exp1.getAxis())) // same as exp2.getAxis()
 {}
 
 // -----------------------------------------------------------------------------
@@ -147,7 +147,7 @@ bool PardosGotorFour::solve(const KDL::Frame & rhs, const KDL::Frame & pointTran
     KDL::Vector c2 = exp2.getOrigin() + u - u_p;
 
     KDL::Vector c_diff = c2 - c1;
-    bool samePlane = KDL::Equal(c_diff, n, 1e-4);
+    bool samePlane = KDL::Equal(c_diff, n);
 
     if (!samePlane)
     {
@@ -168,17 +168,17 @@ bool PardosGotorFour::solve(const KDL::Frame & rhs, const KDL::Frame & pointTran
         KDL::Vector omega_a = c_diff / c_norm;
         KDL::Vector omega_h = exp1.getAxis() * omega_a;
         bool intersection = true;
-        bool zeros = KDL::Equal(c_norm+v_p_norm, u_p_norm) || KDL::Equal(c_norm+u_p_norm, v_p_norm) || KDL::Equal(u_p_norm+v_p_norm, c_norm);
+        bool zeros = KDL::Equal(c_norm + v_p_norm, u_p_norm) || KDL::Equal(c_norm + u_p_norm, v_p_norm) || KDL::Equal(u_p_norm + v_p_norm, c_norm);
 
-        if((c_norm>(v_p_norm+u_p_norm)||v_p_norm>(c_norm+u_p_norm)||u_p_norm>(c_norm+v_p_norm)) && !zeros)
+        if (!zeros && (c_norm > (v_p_norm + u_p_norm) || v_p_norm > (c_norm + u_p_norm) || u_p_norm > (c_norm + v_p_norm)))
         {
-            c = c1 + v_p_norm*omega_a;
+            c = c1 + v_p_norm * omega_a;
             d = c;
 
-            if(!KDL::Equal(c, f) && !KDL::Equal(c, k))
+            if (!KDL::Equal(c, f) && !KDL::Equal(c, k))
             {
                 intersection = false;
-            }  
+            }
         }
         else
         {
@@ -280,15 +280,16 @@ bool PardosGotorFive::solve(const KDL::Frame & rhs, const KDL::Frame & pointTran
         theta_d= theta_k - KDL::PI;
     }
 
-    //Account for special cases (e.g., UR) through appropriate adjustments.
-    for(int i=0; i < 3; i++)
+    // Account for special cases (e.g., UR) through appropriate adjustments.
+    for (int i = 0; i < 3; i++)
     {
-        if(!(KDL::Equal(exp_next.getAxis().data[i],0)))
+        if (!KDL::Equal(exp_next.getAxis().data[i], 0))
         {
             float x = dot(f - exp.getOrigin(), exp_next.getAxis());
-            if(x != 0)
+
+            if (x != 0)
             {
-                double d = f.data[i]; //distance by which the plane is offset relative to the plane of motion
+                double d = f.data[i]; // distance by which the plane is offset relative to the plane of motion
 
                 double sin1 = d / v_p.Norm();
                 double sin2 = d / u_p.Norm();
@@ -300,7 +301,7 @@ bool PardosGotorFive::solve(const KDL::Frame & rhs, const KDL::Frame & pointTran
     }
 
     solutions = {{normalizeAngle(theta_k)}, {normalizeAngle(theta_d)}};
-    
+
     return true;
 }
 
@@ -464,10 +465,10 @@ bool PardosGotorSeven::solve(const KDL::Frame &rhs, const KDL::Frame &pointTrans
     bool pg4_ret_c = pg4.solve(KDL::Frame(c1 - f), KDL::Frame::Identity(), reference, pg4_c_sols);
     bool pg4_ret_d = pg4.solve(KDL::Frame(d1 - f), KDL::Frame::Identity(), reference, pg4_d_sols);
 
-    if ((!pg4_ret_c && !pg4_ret_d) && (KDL::dot(axesCross, o1 - o2) == 0.0))
+    if (!pg4_ret_c && !pg4_ret_d && KDL::dot(axesCross, o1 - o2) == 0.0)
     {
-        c1 = r4 + (-pg3_sols[0][0] * exp4.getAxis());
-        d1 = r4 + (-pg3_sols[1][0] * exp4.getAxis());
+        c1 = r4 - pg3_sols[0][0] * exp4.getAxis();
+        d1 = r4 - pg3_sols[1][0] * exp4.getAxis();
 
         pg4_ret_c = pg4.solve(KDL::Frame(c1 - f), KDL::Frame::Identity(), reference, pg4_c_sols);
         pg4_ret_d = pg4.solve(KDL::Frame(d1 - f), KDL::Frame::Identity(), reference, pg4_d_sols);
@@ -540,13 +541,13 @@ PardosGotorEight::PardosGotorEight(const MatrixExponential & _exp1, const Matrix
       lastID(_lastID),
       poe(_poe),
       n(computeNormal(exp1, exp2)),
-      axisPow(vectorPow2(exp1.getAxis())) 
+      axisPow(vectorPow2(exp1.getAxis()))
 {}
 
 // -----------------------------------------------------------------------------
 
 bool PardosGotorEight::solve(const KDL::Frame & rhs, const KDL::Frame & pointTransform, const JointConfig & reference, Solutions & solutions, const KDL::Frame & H_S_T, const KDL::JntArray & c_solutions, const KDL::Frame & H_S_T_0) const{
-    
+
     KDL::Frame Hk;
     KDL::Frame frame_k;
     KDL::Frame Hp;
@@ -571,10 +572,10 @@ bool PardosGotorEight::solve(const KDL::Frame & rhs, const KDL::Frame & pointTra
 
     KDL::Vector f = Hp.p;
     KDL::Vector u3 = f - exp3.getOrigin();
-    KDL::Vector o3p = exp3.getOrigin() + axisPow *u3; 
+    KDL::Vector o3p = exp3.getOrigin() + axisPow *u3;
     KDL::Vector k_ = Hk.p;
     KDL::Vector o3k = Hk * Hp.Inverse() * o3p;
-    
+
     Solutions pg4_sols;
     bool pg4_ret;
 
@@ -614,17 +615,17 @@ bool PardosGotorEight::solve(const KDL::Frame & rhs, const KDL::Frame & pointTra
         KDL::Vector omega_a = c_diff / c_norm;
         KDL::Vector omega_h = exp1.getAxis() * omega_a;
         bool intersection = true;
-        bool zeros = KDL::Equal(c_norm+v_p_norm, u_p_norm) || KDL::Equal(c_norm+u_p_norm, v_p_norm) || KDL::Equal(u_p_norm+v_p_norm, c_norm);
+        bool zeros = KDL::Equal(c_norm + v_p_norm, u_p_norm) || KDL::Equal(c_norm + u_p_norm, v_p_norm) || KDL::Equal(u_p_norm + v_p_norm, c_norm);
 
-        if((c_norm>(v_p_norm+u_p_norm)||v_p_norm>(c_norm+u_p_norm)||u_p_norm>(c_norm+v_p_norm)) && !zeros)
+        if (!zeros && (c_norm > (v_p_norm + u_p_norm) || v_p_norm > (c_norm + u_p_norm) || u_p_norm > (c_norm + v_p_norm)))
         {
-            c = c1 + v_p_norm*omega_a;
+            c = c1 + v_p_norm * omega_a;
             d = c;
 
-            if(!KDL::Equal(c, f_pg4) && !KDL::Equal(c, k_pg4))
+            if (!KDL::Equal(c, f_pg4) && !KDL::Equal(c, k_pg4))
             {
                 intersection = false;
-            }  
+            }
         }
         else
         {
@@ -660,7 +661,7 @@ bool PardosGotorEight::solve(const KDL::Frame & rhs, const KDL::Frame & pointTra
             {normalizeAngle(theta1_1), normalizeAngle(theta2_1)},
             {normalizeAngle(theta1_2), normalizeAngle(theta2_2)}
         };
-        
+
         pg4_ret = samePlane && KDL::Equal(m1_p.Norm(), v_p_norm) && intersection;
     }
     else
@@ -693,7 +694,7 @@ bool PardosGotorEight::solve(const KDL::Frame & rhs, const KDL::Frame & pointTra
 
     KDL::Vector pk = o3k + (f - o3p);
 
-    KDL::Vector u_w = axisPow * u;  
+    KDL::Vector u_w = axisPow * u;
     KDL::Vector v_w = axisPow * v;
 
     KDL::Vector u_p_pk1 = pk - o3k;
@@ -715,7 +716,7 @@ bool PardosGotorEight::solve(const KDL::Frame & rhs, const KDL::Frame & pointTra
     };
 
     return KDL::Equal(u_w, v_w, 1e-2) && KDL::Equal(u_p_pk1.Norm(), v_p_pk1.Norm(), 1e-2) && pg4_ret;
-} 
+}
 
 // -----------------------------------------------------------------------------
 
@@ -730,7 +731,7 @@ PardosGotorThreePadenKahanOne::PardosGotorThreePadenKahanOne(const MatrixExponen
 // -----------------------------------------------------------------------------
 
 bool PardosGotorThreePadenKahanOne::solve(const KDL::Frame & rhs, const KDL::Frame & pointTransform, const JointConfig & reference, Solutions & solutions) const
-{   
+{
     KDL::Vector f = pointTransform * p;
     KDL::Vector k2p = rhs * p;
 
@@ -784,7 +785,7 @@ bool PardosGotorThreePadenKahanOne::solve(const KDL::Frame & rhs, const KDL::Fra
 
 // -----------------------------------------------------------------------------
 
-Algebraic_UR::Algebraic_UR(int _j1, int _j2) 
+Algebraic_UR::Algebraic_UR(int _j1, int _j2)
     : j1(_j1),
       j2(_j2)
 {}
@@ -800,11 +801,11 @@ bool Algebraic_UR::solve(const KDL::Frame & rhs, const KDL::Frame & pointTransfo
 
     double theta = reference[0];
 
-    if(sin(c_solutions(j2)) != 0)
+    if (std::sin(c_solutions(j2)) != 0)
     {
         double s1 = std::sin(c_solutions(j1));
         double c1 = std::cos(c_solutions(j1));
-        double s2 = std::sin(c_solutions(j2)); 
+        double s2 = std::sin(c_solutions(j2));
 
         double A = ox * s1 - oy * c1;
         double B = ny * c1 - nx * s1;
@@ -812,12 +813,12 @@ bool Algebraic_UR::solve(const KDL::Frame & rhs, const KDL::Frame & pointTransfo
         double C = A / s2;
         double D = B / s2;
 
-        theta = std::atan2(C, D); 
+        theta = std::atan2(C, D);
     }
 
     solutions = {{normalizeAngle(theta)}};
 
-    return true; 
+    return true;
 }
 
 // -----------------------------------------------------------------------------

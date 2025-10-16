@@ -304,12 +304,12 @@ public:
         KDL::Frame H_S_T = H_DH_0;
         PoeExpression poe(H_S_T);
 
-        poe.append(MatrixExponential(   MatrixExponential::ROTATION, {0,  0, 1}, {    0,     0, 0.181}));
-        poe.append(MatrixExponential(   MatrixExponential::ROTATION, {0,  1, 0}, {    0,     0, 0.181}));
-        poe.append(MatrixExponential(   MatrixExponential::ROTATION, {0,  1, 0}, {0.478,     0, 0.181}));
-        poe.append(MatrixExponential(   MatrixExponential::ROTATION, {0,  1, 0}, {0.838, 0.174, 0.181}));
-        poe.append(MatrixExponential(   MatrixExponential::ROTATION, {0,  0,-1}, {0.838, 0.174, 0.061}));
-        poe.append(MatrixExponential(   MatrixExponential::ROTATION, {0,  1, 0}, {0.838, 0.174, 0.061}));
+        poe.append(MatrixExponential(MatrixExponential::ROTATION, {0, 0,  1}, {    0,     0, 0.181}));
+        poe.append(MatrixExponential(MatrixExponential::ROTATION, {0, 1,  0}, {    0,     0, 0.181}));
+        poe.append(MatrixExponential(MatrixExponential::ROTATION, {0, 1,  0}, {0.478,     0, 0.181}));
+        poe.append(MatrixExponential(MatrixExponential::ROTATION, {0, 1,  0}, {0.838, 0.174, 0.181}));
+        poe.append(MatrixExponential(MatrixExponential::ROTATION, {0, 0, -1}, {0.838, 0.174, 0.061}));
+        poe.append(MatrixExponential(MatrixExponential::ROTATION, {0, 1,  0}, {0.838, 0.174, 0.061}));
 
         return poe;
     }
@@ -344,9 +344,9 @@ public:
 
         ASSERT_TRUE(ikProblem);
         ASSERT_EQ(ikProblem->solutions(), soln);
+
         ScrewTheoryIkProblem::Solutions solutions;
         auto reachability = ikProblem->solve(H_S_T_q_ST, q, solutions);
-
         ASSERT_TRUE(std::all_of(reachability.begin(), reachability.end(), [](bool r) { return r; }));
         delete ikProblem;
 
@@ -1269,7 +1269,7 @@ TEST_F(ScrewTheoryTest, PardosGotorFive)
 
     checkSolutions(actual, expected);
 
-    //caso del ajuste
+    // caso del ajuste
 
     KDL::Vector p2(0.3, 1, 1);
 
@@ -1288,7 +1288,7 @@ TEST_F(ScrewTheoryTest, PardosGotorFive)
 
 TEST_F(ScrewTheoryTest, PardosGotorSix)
 {
-    //Dos ejes que se cruzan normales
+    // Dos ejes que se cruzan normales
     KDL::Vector p(-1, 0, 0);
     KDL::Vector k(2, 1, 2);
 
@@ -1309,14 +1309,14 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //Desplaza el punto k del caso anterior a una posición que no es alcanzable
+    // Desplaza el punto k del caso anterior a una posición que no es alcanzable
     KDL::Vector k2(2, 2, 2);
     KDL::Frame rhs2(k2 - p);
     ASSERT_FALSE(pg6.solve(rhs2, KDL::Frame::Identity(), actual));
 
     checkSolutions(actual, expected);
 
-    //Desplaza el punto k del caso anterior a una posición que no es alcanzable, aunque los resultados aproximados cambiarán
+    // Desplaza el punto k del caso anterior a una posición que no es alcanzable, aunque los resultados aproximados cambiarán
     KDL::Vector k3(2, 0, 0.25);
     KDL::Frame rhs3(k3 - p);
     ASSERT_FALSE(pg6.solve(rhs3, KDL::Frame::Identity(), actual));
@@ -1325,7 +1325,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //similar al caso anterior
+    // similar al caso anterior
     KDL::Vector p4(-1, 0, 2);
     KDL::Vector k4(2, 1, -2);
     KDL::Frame rhs4(k4 - p4);
@@ -1336,7 +1336,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si el punto p se encuentra en el eje 2
+    // si el punto p se encuentra en el eje 2
     KDL::Vector p5(0, 0, 0);
     KDL::Vector k5(2, 0, -2);
     KDL::Frame rhs5(k5 - p5);
@@ -1347,7 +1347,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si el punto p se encuentra en el eje 2, pero no es alcanzable
+    // si el punto p se encuentra en el eje 2, pero no es alcanzable
     KDL::Vector p6(0, 0, 0);
     KDL::Vector k6(2, 0, -1.5);
     KDL::Frame rhs6(k6 - p6);
@@ -1358,7 +1358,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si el punto p se encuentra en el eje 2, no es alcanzable y el angulo cambia
+    // si el punto p se encuentra en el eje 2, no es alcanzable y el angulo cambia
     KDL::Vector p7(0, 0, 0);
     KDL::Vector k7(5, 0, 0);
     KDL::Frame rhs7(k7 - p7);
@@ -1369,7 +1369,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si el punto p se encuentra en el eje 1
+    // si el punto p se encuentra en el eje 1
     KDL::Vector p8(0, 2, 0);
     KDL::Vector k8(2, 0, 0);
     KDL::Frame rhs8(k8 - p8);
@@ -1380,7 +1380,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si el punto p se encuentra en el eje 2, pero no es alcanzable
+    // si el punto p se encuentra en el eje 2, pero no es alcanzable
     KDL::Vector p9(0, 2, 0);
     KDL::Vector k9(3, 0, 0);
     KDL::Frame rhs9(k9 - p9);
@@ -1391,7 +1391,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si el punto p se encuentra en el eje 2, no es alcanzable y el ángulo cambia
+    // si el punto p se encuentra en el eje 2, no es alcanzable y el ángulo cambia
     KDL::Vector p10(-1, 0, 0);
     KDL::Vector k10(2, 0, 0);
     KDL::Frame rhs10(k10 - p10);
@@ -1402,7 +1402,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si p y k están en el mismo punto, que pertenece al eje 2
+    // si p y k están en el mismo punto, que pertenece al eje 2
     KDL::Vector p11(0, 0, 0);
     KDL::Vector k11(0, 0, 0);
     KDL::Frame rhs11(k11 - p11);
@@ -1413,7 +1413,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si p y k están en el mismo punto, que pertenece al eje 1
+    // si p y k están en el mismo punto, que pertenece al eje 1
     KDL::Vector p12(2, 0, 0);
     KDL::Vector k12(2, 0, 0);
     KDL::Frame rhs12(k12 - p12);
@@ -1424,8 +1424,8 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si p y k están en el mismo punto, que no pertenece a ningún eje. DABA ERROR, he añadido una condición en el else de pg6.solve
-    //para que no devuelva falso si los puntos p y k son iguales
+    // si p y k están en el mismo punto, que no pertenece a ningún eje. DABA ERROR, he añadido una condición en el else de pg6.solve
+    // para que no devuelva falso si los puntos p y k son iguales
     KDL::Vector p13(1, 0, 0);
     KDL::Vector k13(1, 0, 0);
     KDL::Frame rhs13(k13 - p13);
@@ -1436,7 +1436,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
     checkSolutions(actual, expected);
 
-    //si p y k se encuentran en los ejes 1 y 2
+    // si p y k se encuentran en los ejes 1 y 2
     KDL::Vector p14(0, 0, 0);
     KDL::Vector k14(2, 0, 0);
     KDL::Frame rhs14(k14 - p14);
@@ -1450,7 +1450,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSix)
 
 TEST_F(ScrewTheoryTest, PardosGotorSeven)
 {
-    //dos paralelas y una que se cruza, caso con una única solución, ya que los puntos intermedios de los ejes paralelos son iguales
+    // dos paralelas y una que se cruza, caso con una única solución, ya que los puntos intermedios de los ejes paralelos son iguales
     KDL::Vector p(-3, 0, 0);
     KDL::Vector k(2, 1, 2);
 
@@ -1480,7 +1480,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //caso anterior pero con posición no alcanzable
+    // caso anterior pero con posición no alcanzable
     KDL::Vector p2(-3, 0, 0);
     KDL::Vector k2(2, 0, 2);
 
@@ -1499,7 +1499,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //dos paralelas y una que se cruza, caso con dos soluciones, ya que los puntos intermedios de los ejes paralelos son diferentes
+    // dos paralelas y una que se cruza, caso con dos soluciones, ya que los puntos intermedios de los ejes paralelos son diferentes
     KDL::Vector p3(0, 1, 0);
     KDL::Vector k3(4, 0, 1);
 
@@ -1521,7 +1521,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //caso anterior con posición no alcanzable
+    // caso anterior con posición no alcanzable
     KDL::Vector p4(0, 1, 0);
     KDL::Vector k4(4, 0, 2);
 
@@ -1540,7 +1540,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //dos paralelas y una que se corta, caso con cuatro soluciones, ya que los puntos intermedios de los ejes paralelos son diferentes
+    // dos paralelas y una que se corta, caso con cuatro soluciones, ya que los puntos intermedios de los ejes paralelos son diferentes
     KDL::Vector p5(0, 1, 0);
     KDL::Vector k5(2, 0, 1);
 
@@ -1562,7 +1562,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //caso anterior con posición no alcanzable
+    // caso anterior con posición no alcanzable
     KDL::Vector p6(0, 1, 0);
     KDL::Vector k6(2, 0, 2);
 
@@ -1581,7 +1581,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //dos paralelas y una que se corta, caso con dos soluciones, ya que los puntos intermedios de los ejes paralelos son iguales
+    // dos paralelas y una que se corta, caso con dos soluciones, ya que los puntos intermedios de los ejes paralelos son iguales
     KDL::Vector p7(-3, 0, 0);
     KDL::Vector k7(0, 1, 0);
 
@@ -1603,7 +1603,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //caso anterior con posición no alcanzable
+    // caso anterior con posición no alcanzable
     KDL::Vector p8(-3, 0, 0);
     KDL::Vector k8(0, 0, 0);
 
@@ -1622,7 +1622,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //p pertenece al eje 3
+    // p pertenece al eje 3
     KDL::Vector p9(-2, 0, 0);
     KDL::Vector k9(2, 2, 2);
 
@@ -1641,7 +1641,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //k pertenece al punto final de la rotación entre los paralelos
+    // k pertenece al punto final de la rotación entre los paralelos
     KDL::Vector p10(-3, 0, 0);
     KDL::Vector k10(0, 1, 0);
 
@@ -1660,7 +1660,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //k pertenece al eje 1
+    // k pertenece al eje 1
     KDL::Vector p11(0, 1, 0);
     KDL::Vector k11(3, 1, 1);
 
@@ -1682,7 +1682,7 @@ TEST_F(ScrewTheoryTest, PardosGotorSeven)
 
     checkSolutions(actual, expected);
 
-    //p y k son iguales
+    // p y k son iguales
     KDL::Vector p12(-3, 0, 0);
     KDL::Vector k12(-3, 0, 0);
 

@@ -6,7 +6,6 @@
 #include <iterator> // std::advance, std::distance
 #include <set>
 #include <vector>
-#include <iostream>
 
 #include "ScrewTheoryIkSubproblems.hpp"
 
@@ -410,22 +409,23 @@ ScrewTheoryIkProblem::JointIdsToSubproblem ScrewTheoryIkProblemBuilder::trySolve
             {
                 auto itUnknown = std::find_if(poeTerms.begin(), poeTerms.end(), unknownTerm);
                 int unKnownID = std::distance(poeTerms.begin(), itUnknown);
-                int last = std::distance(poeTerms.begin(), poeTerms.end()-1);
+                int last = std::distance(poeTerms.begin(), poeTerms.end() - 1);
 
                 auto itknown1 = std::find_if(poeTerms.begin(), poeTerms.end(), knownTerm);
                 int q1 = std::distance(poeTerms.begin(), itknown1);
+
                 auto itknown2 = std::find_if(itknown1 + 1, poeTerms.end(), knownTerm);
                 int q2 = std::distance(poeTerms.begin(), itknown2);
-                
+
                 const MatrixExponential & first = poe.exponentialAtJoint(unKnownID);
-                const MatrixExponential & second = poe.exponentialAtJoint(unKnownID+1);
-                const MatrixExponential & third = poe.exponentialAtJoint(unKnownID+2);
+                const MatrixExponential & second = poe.exponentialAtJoint(unKnownID + 1);
+                const MatrixExponential & third = poe.exponentialAtJoint(unKnownID + 2);
                 const MatrixExponential & sixth = poe.exponentialAtJoint(last);
 
                 if (parallelAxes(first, second) && parallelAxes(second, third) && parallelAxes(third, sixth))
                 {
-                poeTerms[last].known = true;
-                return {{last}, new Algebraic_UR(q1, q2)};
+                    poeTerms[last].known = true;
+                    return {{last}, new Algebraic_UR(q1, q2)};
                 }
             }
             else return {{}, nullptr};
@@ -541,9 +541,9 @@ ScrewTheoryIkProblem::JointIdsToSubproblem ScrewTheoryIkProblemBuilder::trySolve
             }
         }
     }
-    else if(unknownsCount == 3 && nextToLastUnknown != poeTerms.rend() && simplifiedCount == 0)
+    else if (unknownsCount == 3 && nextToLastUnknown != poeTerms.rend() && simplifiedCount == 0)
     {
-        if ((!unknownNotSimplifiedTerm(*nextToLastUnknown)) && (!unknownNotSimplifiedTerm(*doubleNextToLastUnknown)))
+        if (!unknownNotSimplifiedTerm(*nextToLastUnknown) && !unknownNotSimplifiedTerm(*doubleNextToLastUnknown))
         {
             return {{}, nullptr};
         }
@@ -573,7 +573,7 @@ ScrewTheoryIkProblem::JointIdsToSubproblem ScrewTheoryIkProblemBuilder::trySolve
                     && !colinearAxes(nextToLastExp, lastExp)
                     && !colinearAxes(secondNextToLastExp, nextToLastExp))
                 {
-                    if(simplifiedCount == 0)
+                    if (simplifiedCount == 0)
                     {
                         poeTerms[lastExpId].known = poeTerms[nextToLastExpId].known = poeTerms[secondNextToLastExpId].known = true;
                         return {{secondNextToLastExpId, nextToLastExpId, lastExpId}, new PardosGotorEight(secondNextToLastExp, nextToLastExp, lastExp, testPoints[0], secondNextToLastExpId, lastExpId, poe)};
@@ -605,6 +605,7 @@ void ScrewTheoryIkProblemBuilder::simplify(int depth)
                 break;
             }
         }
+
         simplifyWithPardosFive();
     }
 }
@@ -737,97 +738,6 @@ void ScrewTheoryIkProblemBuilder::simplifyWithPardosOne()
 
 // -----------------------------------------------------------------------------
 
-void ScrewTheoryIkProblemBuilder::simplifyWithPardosFive()
-{
-    // Pick first leftmost and rightmost unknown PoE terms.
-    auto itUnknown = std::find_if(poeTerms.begin(), poeTerms.end(), unknownNotSimplifiedTerm);
-    auto ritUnknown = std::find_if(poeTerms.rbegin(), poeTerms.rend(), unknownNotSimplifiedTerm);
-
-    int idStart = std::distance(poeTerms.begin(), itUnknown);
-    int idEnd = std::distance(ritUnknown, poeTerms.rend()) - 1;
-
-    if (idStart >= idEnd)
-    {
-        // Same term or something went wrong (all terms have been already simplified).
-        return;
-    }
-
-    const MatrixExponential & firstExp = poe.exponentialAtJoint(idStart);
-    const MatrixExponential & lastExp = poe.exponentialAtJoint(idEnd);
-
-    if (firstExp.getMotionType() == MatrixExponential::ROTATION)
-    {
-        bool simplified = false;
-
-        // Advance from the leftmost PoE term.
-        for (int i = idEnd - 1; i >= idStart; i--)
-        {
-            const MatrixExponential & nextExp = poe.exponentialAtJoint(i + 1);
-
-            // Compare two consecutive PoE terms.
-            if (i != idStart)
-            {
-                const MatrixExponential & currentExp = poe.exponentialAtJoint(i);
-
-                if (nextExp.getMotionType() == MatrixExponential::ROTATION
-                    && currentExp.getMotionType() == MatrixExponential::ROTATION
-                    && parallelAxes(currentExp, nextExp))
-                {
-                    // Might be ultimately simplified, let's find out in the next iterations.
-                    simplified = true;
-                    continue;
-                }
-            }
-            else if (!parallelAxes(firstExp, nextExp)
-                    && simplified == true)
-            {
-                // Can simplify everything to the *right* of this PoE term.
-                for (int j = idStart + 1; j <= idEnd; j++)
-                {
-                    poeTerms[j].simplified = true;
-                }
-            }
-
-            break;
-        }
-    }
-    else if (lastExp.getMotionType() == MatrixExponential::ROTATION)
-    {
-        bool simplified = false;
-        // Advance from the rightmost PoE term.
-        for (int i = idStart + 1; i <= idEnd; i++)
-        {
-            const MatrixExponential & prevExp = poe.exponentialAtJoint(i - 1);
-
-            if (i != idEnd)
-            {
-                const MatrixExponential & currentExp = poe.exponentialAtJoint(i);
-
-                if (prevExp.getMotionType() == MatrixExponential::ROTATION
-                    && currentExp.getMotionType() == MatrixExponential::ROTATION
-                    && parallelAxes(currentExp, prevExp))
-                {
-                    simplified = true;
-                    continue;
-                }
-            }
-            else if (!parallelAxes(lastExp, prevExp)
-                    && simplified == true)
-            {
-                // Can simplify everything to the *left* of this PoE term.
-                for (int j = idEnd - 1; j >= idStart; j--)
-                {
-                    poeTerms[j].simplified = true;
-                }
-            }
-
-            break;
-        }
-    }
-}
-
-// -----------------------------------------------------------------------------
-
 bool ScrewTheoryIkProblemBuilder::simplifyWithPardosThree(MatrixExponential & exp1, MatrixExponential & exp2, KDL::Vector & point)
 {
     // Pick first leftmost and rightmost unknown PoE terms.
@@ -887,6 +797,96 @@ bool ScrewTheoryIkProblemBuilder::simplifyWithPardosThree(MatrixExponential & ex
         }
     }
     return false;
+}
+
+// -----------------------------------------------------------------------------
+
+void ScrewTheoryIkProblemBuilder::simplifyWithPardosFive()
+{
+    // Pick first leftmost and rightmost unknown PoE terms.
+    auto itUnknown = std::find_if(poeTerms.begin(), poeTerms.end(), unknownNotSimplifiedTerm);
+    auto ritUnknown = std::find_if(poeTerms.rbegin(), poeTerms.rend(), unknownNotSimplifiedTerm);
+
+    int idStart = std::distance(poeTerms.begin(), itUnknown);
+    int idEnd = std::distance(ritUnknown, poeTerms.rend()) - 1;
+
+    if (idStart >= idEnd)
+    {
+        // Same term or something went wrong (all terms have been already simplified).
+        return;
+    }
+
+    const MatrixExponential & firstExp = poe.exponentialAtJoint(idStart);
+    const MatrixExponential & lastExp = poe.exponentialAtJoint(idEnd);
+
+    if (firstExp.getMotionType() == MatrixExponential::ROTATION)
+    {
+        bool simplified = false;
+
+        // Advance from the leftmost PoE term.
+        for (int i = idEnd - 1; i >= idStart; i--)
+        {
+            const MatrixExponential & nextExp = poe.exponentialAtJoint(i + 1);
+
+            // Compare two consecutive PoE terms.
+            if (i != idStart)
+            {
+                const MatrixExponential & currentExp = poe.exponentialAtJoint(i);
+
+                if (nextExp.getMotionType() == MatrixExponential::ROTATION
+                    && currentExp.getMotionType() == MatrixExponential::ROTATION
+                    && parallelAxes(currentExp, nextExp))
+                {
+                    // Might be ultimately simplified, let's find out in the next iterations.
+                    simplified = true;
+                    continue;
+                }
+            }
+            else if (simplified && !parallelAxes(firstExp, nextExp))
+            {
+                // Can simplify everything to the *right* of this PoE term.
+                for (int j = idStart + 1; j <= idEnd; j++)
+                {
+                    poeTerms[j].simplified = true;
+                }
+            }
+
+            break;
+        }
+    }
+    else if (lastExp.getMotionType() == MatrixExponential::ROTATION)
+    {
+        bool simplified = false;
+
+        // Advance from the rightmost PoE term.
+        for (int i = idStart + 1; i <= idEnd; i++)
+        {
+            const MatrixExponential & prevExp = poe.exponentialAtJoint(i - 1);
+
+            if (i != idEnd)
+            {
+                const MatrixExponential & currentExp = poe.exponentialAtJoint(i);
+
+                if (prevExp.getMotionType() == MatrixExponential::ROTATION
+                    && currentExp.getMotionType() == MatrixExponential::ROTATION
+                    && parallelAxes(currentExp, prevExp))
+                {
+                    simplified = true;
+                    continue;
+                }
+            }
+            else if (simplified && !parallelAxes(lastExp, prevExp))
+            {
+                // Can simplify everything to the *left* of this PoE term.
+                for (int j = idEnd - 1; j >= idStart; j--)
+                {
+                    poeTerms[j].simplified = true;
+                }
+            }
+
+            break;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------------

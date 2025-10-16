@@ -325,6 +325,7 @@ class PardosGotorSix : public ScrewTheoryIkSubproblem
 {
 public:
     using ScrewTheoryIkSubproblem::solve;
+
     /**
      * @brief Constructor
      *
@@ -417,15 +418,15 @@ public:
      */
     PardosGotorEight(const MatrixExponential & exp1, const MatrixExponential & exp2, const MatrixExponential & exp3, const KDL::Vector & p, const int firstID, const int lastId, const PoeExpression poe);
 
-
     bool solve(const KDL::Frame & rhs, const KDL::Frame & pointTransform, const JointConfig & reference, Solutions & solutions, const KDL::Frame & H_S_T, const KDL::JntArray & c_solutions, const KDL::Frame & H_S_T_0) const override;
 
     bool solve(const KDL::Frame & rhs, const KDL::Frame & pointTransform, const JointConfig & reference, Solutions & solutions) const override
     {
         return false;
     }
+
     int solutions() const override
-    { return 2; }//two sets of triple solutions
+    { return 2; } //two sets of triple solutions
 
     const char * describe() const override
     { return "PG8"; }

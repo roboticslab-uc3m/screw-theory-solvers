@@ -4,7 +4,6 @@
 
 #include <numeric> // std::accumulate
 #include <vector>
-#include <iostream>
 
 #include "ScrewTheoryTools.hpp"
 
@@ -87,8 +86,6 @@ std::vector<bool> ScrewTheoryIkProblem::solve(const KDL::Frame & H_S_T, const KD
     // Reserve space in memory to avoid additional allocations on runtime.
     solutions.reserve(soln);
 
-    const KDL::Frame & H_S_T_0 = poe.getTransform(); 
-
     // Insert a dummy value to avoid accessing an empty vector.
     solutions.emplace_back(poe.size());
     rhsFrames.emplace_back((reversed ? H_S_T.Inverse() : H_S_T) * poe.getTransform().Inverse());
@@ -122,8 +119,7 @@ std::vector<bool> ScrewTheoryIkProblem::solve(const KDL::Frame & H_S_T, const KD
             // Actually solve each subproblem, use current right-hand side of PoE to obtain
             // the right-hand side of said subproblem. Local reachability is common to all
             // partial solutions, and will be and-ed with the global reachability status.
-
-            bool reachable = subproblem->solve(rhsFrames[i], H, referenceValues, partialSolutions, H_S_T, solutions[i], H_S_T_0) & reachability[i];
+            bool reachable = subproblem->solve(rhsFrames[i], H, referenceValues, partialSolutions, H_S_T, solutions[i], poe.getTransform()) & reachability[i];
 
             // The global number of solutions is increased by this step.
             if (partialSolutions.size() > 1)
